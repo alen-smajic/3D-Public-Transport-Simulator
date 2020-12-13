@@ -18,6 +18,7 @@
 (English): Develoopment and testing of an interactive 3D city model using the example of the local public transport network of the city of Frankfurt
   
 ## Project Description ##
+The goal of this project was the development of an interactive 3D city model, with focus on the local public transport. The simulation should automatically generate a three-dimensional visualization of the buildings based on a user-specified location and integrate the local public transport. The public transport network  of the city of Frankfurt served as an example of the elaboration for the thesis. The project covers some major tasks like collecting geographic information and processing complex data. 
 
 ## Publications ##
   * **[ResearchGate](https://www.researchgate.net/publication/344784145_Entwicklung_und_Erprobung_eines_interaktiven_3D_-_Stadtmodells_am_Beispiel_des_Personennahverkehrsnetzwerks_der_Stadt_Frankfurt)**
