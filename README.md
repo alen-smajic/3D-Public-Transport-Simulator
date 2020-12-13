@@ -11,6 +11,10 @@
   * **[Goethe University](http://www.informatik.uni-frankfurt.de/index.php/en/)**
   * **[TTLab - Text Technology Lab](https://www.texttechnologylab.org/)**
   
+**Bachelor Thesis Topic:**
+(German): Entwicklung und Erprobung eines interaktiven 3D - Stadtmodells am Beispiel des Personennahverkehrsnetzwerks der Stadt Frankfurt
+(English): Develoopment and testing of an interactive 3D city model using the example of the local public transport network of the city of Frankfurt
+  
 ## Project Description ##
 
 ## Publications ##
