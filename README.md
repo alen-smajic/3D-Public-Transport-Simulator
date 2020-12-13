@@ -20,7 +20,7 @@
 ## Tools ## 
 * Unity
 * C#
-* OSM-XML
+* OSM XML
 * Blender
 
 ## Results ##
