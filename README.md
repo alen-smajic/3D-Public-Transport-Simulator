@@ -1,5 +1,4 @@
 # 3D Public Transport Simulator, Goethe University Frankfurt (Fall 2019) Bachelor Thesis
-Hierbei handelt es sich um eine Simulation des ÖPNV entwickelt im Rahmen einer Bachelorarbeit an der Goethe-Universität in Frankfurt
 
 ## General Information
 <img align="right" width="300" height="" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Logo-Goethe-University-Frankfurt-am-Main.svg">
