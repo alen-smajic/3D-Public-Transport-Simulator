@@ -11,9 +11,7 @@
   * **[Goethe University](http://www.informatik.uni-frankfurt.de/index.php/en/)**
   * **[TTLab - Text Technology Lab](https://www.texttechnologylab.org/)**
   
-**Project description:**
-
-
+## Project Description ##
 
 ## Publications ##
   * **[ResearchGate](https://www.researchgate.net/publication/344784145_Entwicklung_und_Erprobung_eines_interaktiven_3D_-_Stadtmodells_am_Beispiel_des_Personennahverkehrsnetzwerks_der_Stadt_Frankfurt)**
