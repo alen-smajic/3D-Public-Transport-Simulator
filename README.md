@@ -4,7 +4,7 @@ Hierbei handelt es sich um eine Simulation des ÖPNV entwickelt im Rahmen einer 
 ## General Information
 <img align="right" width="300" height="" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Logo-Goethe-University-Frankfurt-am-Main.svg">
 
-**Instructors:**
+**Supervisor:**
 * [Prof. Dr. Alexander Mehler](https://www.texttechnologylab.org/team/alexander-mehler/), email: mehler@em.uni-frankfurt.de
 * [Giuseppe Abrami](https://www.texttechnologylab.org/team/giuseppe-abrami/), email: abrami@em.uni-frankfurt.de
 
@@ -14,11 +14,11 @@ Hierbei handelt es sich um eine Simulation des ÖPNV entwickelt im Rahmen einer 
   
 **Project description:**
 
-This repository includes a 3D model of the Synagoge Hoechst in Germany, which was destroyed during WWII.
+
 
 ## Publications ##
-  * **[ResearchGate](https://www.researchgate.net/publication/344830141_Rekonstruktion_der_Synagoge_Hochst)**
-  * **[YouTube Video](https://www.youtube.com/watch?v=D5pH_EUDmik)**
+  * **[ResearchGate](https://www.researchgate.net/publication/344784145_Entwicklung_und_Erprobung_eines_interaktiven_3D_-_Stadtmodells_am_Beispiel_des_Personennahverkehrsnetzwerks_der_Stadt_Frankfurt)**
+  * **[YouTube Video](https://www.youtube.com/watch?v=etmjra_CXOc)**
   
 ## Tools ## 
 * Blender
