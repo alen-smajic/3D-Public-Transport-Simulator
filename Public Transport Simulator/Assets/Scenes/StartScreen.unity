@@ -453,8 +453,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 15.599976, y: -110.50003}
-  m_SizeDelta: {x: 1368, y: 514.8}
+  m_AnchoredPosition: {x: 1.9, y: -110.50003}
+  m_SizeDelta: {x: 1340.5544, y: 514.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &21010316
 MonoBehaviour:
@@ -5222,7 +5222,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Tipp: Use the TAB-button to switch between the flight and the cursor mode'
+  m_Text: 'Tip: Use the TAB-button to switch between the flight and the cursor mode'
 --- !u!222 &492572990
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12806,15 +12806,15 @@ MonoBehaviour:
   - {fileID: 320729211}
   - {fileID: 1454737096}
   - {fileID: 97424862}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1816492708}
+  - {fileID: 1687677855}
   - {fileID: 1614056516}
   - {fileID: 624102797}
   - {fileID: 406837203}
   - {fileID: 938820389}
   - {fileID: 2097826569}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1687677855}
+  - {fileID: 1816492708}
   - {fileID: 1646231904}
   - {fileID: 1917325406}
   - {fileID: 1125476735}
@@ -12823,6 +12823,14 @@ MonoBehaviour:
   - {fileID: 1687677855}
   - {fileID: 1816492708}
   - {fileID: 190151022}
+  - {fileID: 492572987}
+  - {fileID: 624102797}
+  - {fileID: 1614056516}
+  - {fileID: 897001386}
+  - {fileID: 944017850}
+  - {fileID: 492572987}
+  - {fileID: 492572987}
+  - {fileID: 492572987}
   - {fileID: 492572987}
   UI_Ger:
   - {fileID: 1324464014}
@@ -12886,6 +12894,14 @@ MonoBehaviour:
   - {fileID: 1889636256}
   - {fileID: 102529691}
   - {fileID: 1381737024}
+  - {fileID: 849638995}
+  - {fileID: 945772181}
+  - {fileID: 553432756}
+  - {fileID: 1853224121}
+  - {fileID: 1860260116}
+  - {fileID: 849638995}
+  - {fileID: 849638995}
+  - {fileID: 849638995}
   - {fileID: 849638995}
 --- !u!1 &1259972842
 GameObject:
