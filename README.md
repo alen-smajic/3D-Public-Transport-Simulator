@@ -36,7 +36,7 @@ The goal of this project was the development of an interactive 3D city model, wi
 <img align="right" width="390" height="" src="Images%20of%20the%20simulation/Menu/Data%20Source%20Menu.png">
 <img align="left" width="390" height="" src="Images%20of%20the%20simulation/Menu/Options%20Menu.png">
 <img align="right" width="390" height="" src="Images%20of%20the%20simulation/Menu/Credits%20Menu.png">
-<img align="center" width="800" height="" src="Images%20of%20the%20simulation/Cities/New%20York.png">
+<img align="center" width="1000" height="" src="Images%20of%20the%20simulation/Cities/New%20York.png">
 <img align="left" width="390" height="" src="Images%20of%20the%20simulation/Controls/Instructions%202.png">
 <img align="right" width="390" height="" src="Images%20of%20the%20simulation/Cities/New%20York%202.png">
 <img align="center" width="800" height="" src="Images%20of%20the%20simulation/Public%20Transport%20Networks/New%20York.png">
