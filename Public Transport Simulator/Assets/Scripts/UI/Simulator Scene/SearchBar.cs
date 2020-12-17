@@ -15,6 +15,15 @@ public class SearchBar : MonoBehaviour
     // Als aller erstes wird eine Liste mit allen möglichen Stationsnamen hinterlegt.
     void Start()
     {
+        if(LanguageSettings.Language == "English")
+        {
+            transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Search for stations..";
+        }
+        else
+        {
+            transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Suche nach Stationen..";
+        }
+
         FoundStations = new List<string>();
         AllStation = new List<string>();
 
@@ -47,7 +56,14 @@ public class SearchBar : MonoBehaviour
 
         DropDown.SetActive(true);
         FoundStations.Clear();
-        FoundStations.Add("Suchergebnisse:");
+        if(LanguageSettings.Language == "English")
+        {
+            FoundStations.Add("Search results:");
+        }
+        else
+        {
+            FoundStations.Add("Suchergebnisse:");
+        }
         
         for(int i = 0; i < AllStation.Count; i++)
         {
