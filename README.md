@@ -29,6 +29,7 @@ The goal of this project was the development of an interactive 3D city model, wi
 * C#
 * OSM XML
 * Blender
+* Mapbox SDK for Unity
 
 ## Results ##
 
