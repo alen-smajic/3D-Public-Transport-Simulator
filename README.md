@@ -18,7 +18,11 @@
 (English): Development and testing of an interactive 3D city model using the example of the local public transport network of the city of Frankfurt
   
 ## Project Description ##
-The goal of this project was the development of an interactive 3D city model, with focus on the local public transport. The simulation should automatically generate a three-dimensional visualization of the buildings based on a user-specified location and integrate the local public transport. The public transport network  of the city of Frankfurt served as an example of the elaboration for the thesis. The project covers some major tasks like collecting geographic information and processing complex data. 
+The aim of this project is the development of a public transport simulation framework which can be used as a backbone for the development of more complex simulations and applications. It consists of a 3D city model, a graphical representation of the local public transport and its network connections and an interactive feature which lets you browse all possible network connections and generates transport vehicles, that move across the stations. This all is incorporated in a realistic geographical environment, which is true to scale. To achieve this, the framework uses data from the openstreetmap project as its only data source.  
+
+OpenStreetMap (OSM) is a collaborative project to create a free editable map of the world. The geodata underlying the map is considered the primary output of the project. The creation and growth of OSM has been motivated by restrictions on use or availability of map data across much of the world, and the advent of inexpensive portable satellite navigation devices. The data can be extracted in form of an OSM XML file. 
+
+The simulation framework uses an OSM XML parser algorithm to extract the necessary information from the OSM XML file. The backbone for this algorithm was developed by Sloan Kelly in his work “Real World Map Data”. The data is then being processed and stored. 
 
 ## Publications ##
   * **[ResearchGate](https://www.researchgate.net/publication/344784145_Entwicklung_und_Erprobung_eines_interaktiven_3D_-_Stadtmodells_am_Beispiel_des_Personennahverkehrsnetzwerks_der_Stadt_Frankfurt)**
