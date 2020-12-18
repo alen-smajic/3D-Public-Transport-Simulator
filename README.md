@@ -33,7 +33,7 @@ The goal of this project was the development of an interactive 3D city model, wi
 
 ## Results ##
 
-<figure class="image">
+<figure>
  <img align="center" width="1000" height="" src="Images%20of%20the%20simulation/Cities/New%20York.png">
  <figcaption>New York - Manhatten</figcaption>
 </figure>
