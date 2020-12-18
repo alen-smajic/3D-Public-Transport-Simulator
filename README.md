@@ -29,8 +29,20 @@ The goal of this project was the development of an interactive 3D city model, wi
 * C#
 * OSM XML
 * Blender
+* Mapbox SDK for Unity
 
 ## Results ##
-
-<img align="left" width="390" height="" src="Images%20of%20the%20simulation%20Main%20Menu.png">
-<img align="right" width="390" height="" src="Images%20of%20the%20simulation%20Options%20Menu.png">
+<img align="center" width="1000" height="" src="Images%20of%20the%20simulation/Cities/New%20York.png">
+<img align="left" width="390" height="" src="Images%20of%20the%20simulation/Controls/Instructions%202.png">
+<img align="right" width="390" height="" src="Images%20of%20the%20simulation/Cities/New%20York%202.png">
+<img align="center" width="1000" height="" src="Images%20of%20the%20simulation/Public%20Transport%20Networks/New%20York.png">
+<img align="left" width="390" height="" src="Images%20of%20the%20simulation/Public%20Transport%20Networks/London.png">
+<img align="right" width="390" height="" src="Images%20of%20the%20simulation/Vehicles/Bus.png">
+<img align="center" width="1000" height="" src="Images%20of%20the%20simulation/Vehicles/Train.png">
+<img align="center" width="1000" height="" src="Images%20of%20the%20simulation/Public%20Transport%20Networks/Paris%202.png">
+<img align="left" width="390" height="" src="Images%20of%20the%20simulation/Vehicles/Subway.png">
+<img align="right" width="390" height="" src="Images%20of%20the%20simulation/Vehicles/Tram.png">
+<img align="left" width="390" height="" src="Images%20of%20the%20simulation/Menu/Main%20Menu.png">
+<img align="right" width="390" height="" src="Images%20of%20the%20simulation/Menu/Data%20Source%20Menu.png">
+<img align="left" width="390" height="" src="Images%20of%20the%20simulation/Menu/Options%20Menu.png">
+<img align="right" width="390" height="" src="Images%20of%20the%20simulation/Menu/Credits%20Menu.png">
