@@ -38,6 +38,10 @@ The goal of this project was the development of an interactive 3D city model, wi
  <figcaption>New York - Manhatten</figcaption>
 </figure>
 
+<figure>
+  <img src="Images%20of%20the%20simulation/Cities/New%20York.png" alt="my alt text"/>
+  <figcaption>This is my caption text.</figcaption>
+</figure>
 
 <img align="left" width="390" height="" src="Images%20of%20the%20simulation/Controls/Instructions%202.png">
 <img align="right" width="390" height="" src="Images%20of%20the%20simulation/Cities/New%20York%202.png">
