@@ -3,33 +3,59 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
 // Dieses Skript ist ähnlich zu "VehicleMover" jedoch ist dieses auf die Wagon Fahrzeuge ausgerichtet und bewegt
 // die jeweiligen Wagon Fahrzeuge abhängig von dem davor generierten Fahrzeug. Das Fahrzeug welches dieses Skript
 // enthält, folgt dem zuletzt generiertem Obekt.
+/// <summary>
+/// This script works similarly to the script "VehicleMover". It is designed only for train wagons which are not 
+/// leading the train. Every wagon follows the wagon in fron of it.
+/// </summary>
 public class WagonMover : MonoBehaviour
 {
-    int targetIndex = 0; // Index des Punktes welcher als nächstes angefahren wird.
+    int targetIndex = 0; // Index of the next point which we are moving to.
 
     bool isWaiting = false;
 
-    float VehicleMaxSpeed = 100f; // Geschwindigkeit des Fahrzeugs.
+    float VehicleMaxSpeed = 100f; 
 
-    GameObject WagonToFollow; // Fahrzeug welchem gefolgt wird.
+    GameObject WagonToFollow; 
 
     Vector3 lastWagonPos = Vector3.zero;
     Vector3 curWagonPos = new Vector3(0, 0, 1);
 
-    float velocity = 1f; // Wird genutzt für die Geschwindigkeitsanpassung.
+    float velocity = 1f; 
 
     void Start()
     {
-        transform.position = SortWay.PathsInRightOrder[0][0]; // Das Fahrzeug befindet sich am ersten Punkt der Liste.
+        transform.position = SortWay.PathsInRightOrder[0][0]; // Starting point for the vehicle.
 
         List<GameObject> allGameObjects = new List<GameObject>();
         Scene scene = SceneManager.GetActiveScene();
         scene.GetRootGameObjects(allGameObjects);
 
-        // Als Objekt welchem gefolgt werden soll wird das vorletzte Objekt der Scene genommen. 
+        // The object which is being followed is set to be the last object which was generated in the Unity scene.
         WagonToFollow = allGameObjects[allGameObjects.Count - 2];
     }
 
@@ -37,11 +63,11 @@ public class WagonMover : MonoBehaviour
     {   
         if(WagonToFollow == null)
         {
-            gameObject.Destroy(); // Falls das Objekt welches verfolgt wird nicht mehr existiert, wird das aktuelle Fahrzeug ebenfalls zerstört.
+            gameObject.Destroy(); // If the followed wagon is destroyed (because it reached the endpoint) the following wagon will also destroy itself.
             return;
         }
 
-        // Hier wird die Entfärnung des aktuellen Fahrzeugs zu dem verfolgtem Fahrzeug gemessen.
+        // Here we measure the distance to the wagon which is being followed.
         float distance = Vector3.Distance(WagonToFollow.transform.GetChild(0).GetChild(1).position, transform.GetChild(0).GetChild(0).position);
         if(Vector3.Distance(WagonToFollow.transform.position, transform.position) < 30)
         {
@@ -49,53 +75,51 @@ public class WagonMover : MonoBehaviour
         }
         else if(distance > 20)
         {
-            // Falls die Entfärnung zwischen den Fahrzeugen zu groß ist, wird beschleunigt um dieses einzuholen.
+            // If the distance to the followed wagon is too big, the following wagon will increase its speed.
             velocity = 1.2f;
         }
         else if(distance < 10)
         {
-            // Falls die Entfärnung zwischen den Fahrzeugen zu klein ist, wird verlangsamt um die Entfärnung anzupassen.
+            // If the distance to the followed wagon is too small, the following wagon will decrease its speed.
             velocity = .8f;
         }
         else
         {
-            // Falls die Entfärnung stimmt, wird die aktuelle Geschwindigkeit gehalten.
+            // If the distance to the followed wagon is good, the speed of the following wagon will stay the same.
             velocity = 1f;
         }
 
-        // Dieser Abschnitt misst ob das verfolgte Fahrzeug stehen geblieben ist. Falls dies der Fall ist, wird das
-        // Wagonfahrzeug ebenfalls stehen bleiben und sich erst dann bewegen wenn sich das verfolgte Fahrzeug
-        // erneut bewegt.
+        // Here we measure if the followed wagon has stopped. If this is the case, the following wagon will also stop
+        // and move as sonn as the followed wagon start moving again.
         curWagonPos = WagonToFollow.transform.position;
         if( curWagonPos == lastWagonPos)
         {
-            // Verfolgtes Fahrzeug ist stehengeblieben.
+            // Followed wagon has stopped.
             isWaiting = true;
         }
         else
         {
-            // Verfolgtes Fahrzeug bewegt sich.
+            // Followed wagon is moving.
             isWaiting = false;
         }
         lastWagonPos = curWagonPos;
         if (isWaiting)
         {
-            return; // Das Wagon Fahrzeug bewegt sich nicht mehr.
+            return; 
         }
 
-        // Das Wagon Fahrzeug bewegt sich jeweils zum nächsten Punkt der "MoveToTarget" Liste.
+        // The wagon vehicle is being moved to the next point of the "MoveToTarget" list
         transform.position = Vector3.MoveTowards(transform.position, SortWay.MoveToTarget[targetIndex], Time.deltaTime * VehicleMaxSpeed * velocity);
         if (transform.position == SortWay.MoveToTarget[targetIndex])
         {
             if (SortWay.PathLastNode.Contains(transform.position))
             {
-                // Falls das Wagon Fahrzeug den letzten Punkt eines Pfades erreicht hat, wird es zum nächsten Punket
-                // "telepotiert" statt diesen anzufahren. Dieser nächste Punkt ist zugleich der erste Punkt des neuen Pfades. Dies wird
-                // gemacht um zu vermeiden dass das Fahrzeug zum nächsten Punkt ohne Straße/Schine fährt.
+                // If the road/railroad consists of more than one part we have to teleport the vehicle to the other part upon reaching.
+                // the end of one part.
                 int index = SortWay.MoveToTarget.IndexOf(transform.position);
                 transform.position = SortWay.MoveToTarget[index + 1];
             }
-            transform.LookAt(SortWay.MoveToTarget[targetIndex + 1]); // Rotiert das Fahrzeug in die Richtung des nächsten Punktes.
+            transform.LookAt(SortWay.MoveToTarget[targetIndex + 1]); 
 
             targetIndex += 1;
         }

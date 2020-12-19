@@ -1,11 +1,37 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-// Diese Klasse steuert die durch den Nutzer ausgewählten Optionen. Diese
-// Informationen werden genutzt um eine optimiert Ausführung des Programms
-// zu gewährleisten und nur die ausgewählten Objekte anzuzeigen.
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// This class is used to store the user specified options. It is used to specify
+/// which type of information should be extracted and stored from the data source.
+/// It also handles the available checkbox options in the options menu.
+/// </summary>
+
 public class UserPreferences : MonoBehaviour
 {
+    // Reference to the checkboxes from the UI
     public GameObject subways_toggle;
     public GameObject trams_toggle;
     public GameObject trains_toggle;
@@ -35,9 +61,11 @@ public class UserPreferences : MonoBehaviour
 
     public static bool Busses = true;
 
-    // Falls diese Option gewählt wird, werden dem Nutzer weitere
-    // Optionen zur verfügung gestellt, welche in einem Zusammenhang
-    // stehen.
+    /// <summary>
+    /// Further checkboxes will be activated or deactivated depending on the 
+    /// value of this checkbox.
+    /// </summary>
+    /// <param name="newValue">The value parameter of the checkbox</param>
     public void PublicTransportRailways_f(bool newValue)
     {
         PublicTransportRailways = newValue;
@@ -70,9 +98,11 @@ public class UserPreferences : MonoBehaviour
         }
     }
 
-    // Falls diese Option gewählt wird, werden dem Nutzer weitere
-    // Optionen zur verfügung gestellt, welche in einem Zusammenhang
-    // stehen.
+    /// <summary>
+    /// Further checkboxes will be activated or deactivated depending on the 
+    /// value of this checkbox.
+    /// </summary>
+    /// <param name="newValue">The value parameter of the checkbox</param>
     public void Stations_f(bool newValue)
     {
         Stations = newValue;

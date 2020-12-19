@@ -3,8 +3,33 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-// Diese Klasse steuert die Ausführung des Hauptmenüs innerhalb des StartScreens.
-// Dies ist zugleich der erste Ausgangspunkt des Programms.
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// This class is controlling the Main Menu of the simulation and the whole 
+/// "StartScreen" Scene. It also processes the user input of the path to the data 
+/// source (the OSM XML file) and switches to the loading screen.
+/// </summary>
 public class FileLoader : MonoBehaviour
 {
     public GameObject StartScreen;
@@ -24,21 +49,16 @@ public class FileLoader : MonoBehaviour
     public GameObject ErrorMessageOptions;
     public GameObject ErrorMessageOptions2;
 
-
-    // Hier wird der Pfad zur XML Datei gespeichert. Auf diese Variable
-    // greift das Skript MapReader zu um die Daten zu laden.
+    // Here will be the path to the OSM XML file stored.
     public static string ResourceFilePath;
 
-    // Prüft ob der Nutzer eine Eingabe getätigt hat um die Simulation zu starten.
     bool user_input = false;
 
-    // Hilfsvariable für das Abfangen von Fehlern, welche erst im MapReader Skript erkannt werden.
     public static bool simulator_loaded = false;
     
     private void Update()
     {
-        // Hier wird geprüft ob der Nutzer eine korrekte Eingabe gemacht hat.
-        // Falls dies stimmt wird das Ladefenster geladen.
+        // Checks if the user specified path is valid and loads the loading screen.
         if (user_input == true)
         {
             StartScreen.SetActive(false);
@@ -52,26 +72,23 @@ public class FileLoader : MonoBehaviour
             {
                 LoadingScreen.SetActive(false);
                 StartScreen.SetActive(true);
-                // Falls die eingegebene Datei keine .txt Datei ist
-                // wird hier eine Fehlermeldung ausgegeben und der Nutzer
-                // zurück ins Hauptmenü gebracht.
                 ErrorMessage.SetActive(true);
             }
         }
 
         if (simulator_loaded)
         {
-            // Falls die eingegebene Datei eine .txt Datei ist aber
-            // nicht in XML Format vorliegt, wird dies durch das
-            // MapReader Skript abgefangen und hier die entsprechende
-            // Fehlermeldung ausgegeben.
+            // If the user specified a correct path to an .txt file which is not
+            // in the XML format, the loading screen will return to the StartScreen
+            // and this line of code will be executed.
             ErrorMessage_2.SetActive(true);
             simulator_loaded = false;
         }
     }
 
-    // Wird aufgerufen falls der Nutzer den Simulation starten-
-    // Button im Hauptmenü drückt.
+    /// <summary>
+    /// Controls the "Launch Simulator" button in the Main Menu.
+    /// </summary>
     public void StartSimulation()
     {
         MainMenu.SetActive(false);
@@ -79,9 +96,9 @@ public class FileLoader : MonoBehaviour
         ErrorMessage_2.SetActive(false);
     }
 
-    // Wird aufgerufen falls der Nutzer den Eingabe-Button
-    // im Ausführmenü drückt. Dadurch wird die Ausführung
-    // des Programms in die nexte Etape gebracht.
+    /// <summary>
+    /// Controls the "START" button in the user input Menu.
+    /// </summary>
     public void ConfirmPath()
     {
         ResourceFilePath = FilePath.GetComponent<Text>().text;
@@ -91,8 +108,9 @@ public class FileLoader : MonoBehaviour
         }
     }
 
-    // Wird aufgerufen falls der Nutzer den Hilfe-Button im
-    // Simulation starten Fenster drückt.
+    /// <summary>
+    /// Controls the "Help" button in the user input Menu.
+    /// </summary>
     public void Help()
     {
         SimulationSource.SetActive(false);
@@ -100,8 +118,9 @@ public class FileLoader : MonoBehaviour
         ErrorMessage.SetActive(false);
     }
 
-    // Wird aufgerufen wenn der Nutzer aus dem Hilfefenster 
-    // zurück in das Simulation starten Fenster zurückkehren will.
+    /// <summary>
+    /// Controls the "Start Simulation" button in the Instructions Menu.
+    /// </summary>
     public void ReturnToSimulationStart()
     {
         Instructions1.SetActive(false);
@@ -110,40 +129,45 @@ public class FileLoader : MonoBehaviour
         SimulationSource.SetActive(true);
     }
 
-    // Wird aufgerufen wenn der Nutzer im Hilfefenster die
-    // nächste Seite sehen will.
+    /// <summary>
+    /// Controls the "Next Page" button in the Instructions Menu.
+    /// </summary>
     public void NextPage1()
     {
         Instructions1.SetActive(false);
         Instructions2.SetActive(true);
     }
 
-    // Wird aufgerufen wenn der Nutzer im Hilfefenster die 
-    // vorherige Seite sehen will.
+    /// <summary>
+    /// Controls the "Return" button in the Instructions Menu.
+    /// </summary>
     public void ReturnPage()
     {
         Instructions1.SetActive(true);
         Instructions2.SetActive(false);
     }
 
-    // Wird aufgerufen wenn der Nutzer im Hilfefenster 
-    // die nächste Seite sehen will.
+    /// <summary>
+    /// Controls the "Next Page" button in the Instructions Menu.
+    /// </summary>
     public void NexPage2()
     {
         Instructions2.SetActive(false);
         Instructions3.SetActive(true);
     }
 
-    // Wird aufgerufen wenn der Nutzer im Hilfefenster
-    // die vorherige Seite sehen will.
+    /// <summary>
+    /// Controls the "Return" button in the Instructions Menu.
+    /// </summary>
     public void Return2()
     {
         Instructions3.SetActive(false);
         Instructions2.SetActive(true);
     }
 
-    // Wird aufgerufen falls der Nutzer den Optionen - Button
-    // im Hauptmenü drückt.
+    /// <summary>
+    /// Controls the "Options" button in the Main Menu.
+    /// </summary>
     public void Options()
     {
         MainMenu.SetActive(false);
@@ -151,10 +175,9 @@ public class FileLoader : MonoBehaviour
         ErrorMessage_2.SetActive(false);
     }
 
-    // Wird aufgerufen wenn der Nutzer das Optionen Fenster
-    // verlassen will. Dabei wird der Fall abgefangen das der
-    // Nutzer keine Option festgelegt hat oder Stationen ohne
-	// Stationstyp auswählt.
+    /// <summary>
+    /// Controls the "Return" button in the Options Menu.
+    /// </summary>
     public void ReturnfromOptions()
     {
         if (!UserPreferences.Buildings && !UserPreferences.Stations && !UserPreferences.AllStreets && !UserPreferences.PublicTransportStreets && !UserPreferences.PublicTransportRailways)
@@ -176,8 +199,9 @@ public class FileLoader : MonoBehaviour
         }
     }
 
-    // Wird aufgerufen falls der Nutzer den About - Button
-    // im Hauptmenü drückt.
+    /// <summary>
+    /// Controls the "About" button in the Main Menu.
+    /// </summary>
     public void About()
     {
         MainMenu.SetActive(false);
@@ -185,8 +209,9 @@ public class FileLoader : MonoBehaviour
         ErrorMessage_2.SetActive(false);
     }
 
-    // Wird aufgerufen falls der Nutzer den Credits - Button
-    // im Hauptmenü drückt.
+    /// <summary>
+    /// Controls the "Credits" button in the Main Menu.
+    /// </summary>
     public void Credits()
     {
         MainMenu.SetActive(false);
@@ -194,8 +219,9 @@ public class FileLoader : MonoBehaviour
         ErrorMessage_2.SetActive(false);
     }
 
-    // Wird aufgerufen falls der Nutzer den Verlassen - Button
-    // im Hauptmenü drückt.
+    /// <summary>
+    /// Controls the "Exit Simulation" button in the Main Menu.
+    /// </summary>
     public void Close()
     {
         MainMenu.SetActive(false);
@@ -203,23 +229,27 @@ public class FileLoader : MonoBehaviour
         ErrorMessage_2.SetActive(false);
     }
 
-    // Wird aufgerufen falls der Nutzer den Ja - Button im
-    // Ausgangsmenü drückt.
+    /// <summary>
+    /// Controls the "Yes" button in the Exit Menu.
+    /// </summary>
     public void Quit_yes()
     {
         Application.Quit();
     }
 
-    // Wird aufgerufen falls der Nutzer den Nein - Button im
-    // Ausgangsmenü drückt.
+    /// <summary>
+    /// Controls the "No" button in the Exit Menu.
+    /// </summary>
     public void Quit_no()
     {
         QuitScreen.SetActive(false);
         MainMenu.SetActive(true);
     }
 
-    // Wird aufgerufen falls der Nutzer den Zurück - Button
-    // drückt um ins Hauptmenü zurückzukehren.
+    /// <summary>
+    /// Controls the "Return" button in the Credits, About, Options and 
+    /// User Input Menu.
+    /// </summary>
     public void Return()
     {
         CreditsScreen.SetActive(false);

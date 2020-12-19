@@ -1,9 +1,32 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-// Diese Klasse steuert die Ausführung der Kamera bzw. des Benutzerfensters innerhalb der Simulation.
-// Dabei kann der Nutzer mit der Maus die Blickrichtung festlegen und durch die Tasten WASD sich im
-// Raum bewegen. Dem Nutzer wird ebenfalls ermöglicht mit den Stationen zu interagieren.
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// This class controlls the camera movement. The user can manipulate the viewing direction using the 
+/// mouse and move around using the WASD keys. The user can also click on stations and activate them.
+/// </summary>
 public class CameraController : MonoBehaviour
 {
 	public GameObject crossHair;
@@ -19,15 +42,15 @@ public class CameraController : MonoBehaviour
     private float yaw = 0.0f;
     private float pitch = 0.0f;
 
-    float mainSpeed = 100.0f; // normale Geschwindigkeit.
-    float shiftAdd = 250.0f; // Beschleunigung durch die Shift-Taste.
-    float maxShift = 1000.0f; // Obergrenze für Beschleunigung.
+    float mainSpeed = 100.0f; // normal movement speed.
+    float shiftAdd = 250.0f; // acceleration speed.
+    float maxShift = 1000.0f; // upper speed limit.
     
 	private float totalRun = 1.0f;
 
 	Camera cam;
 
-    bool stopmoving = true; // steuert den Maus- und Flugmodus.
+    bool stopmoving = true; 
 
     private void Start()
     {
@@ -38,7 +61,7 @@ public class CameraController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            // Innerhalb des Instructions-Fensters kann der Modus nicht geändert werden.
+            // While the Instructions Menu is open, it is not possible to switch modes.
             if (IngameMenu.InstructionsOn)
             {
                 return;
@@ -46,7 +69,7 @@ public class CameraController : MonoBehaviour
 
             stopmoving = !stopmoving;
 			
-			// Mausmodus wird ausgeführt.
+            // Cursor Mode
             if (stopmoving)
             {
                 InputFieldSearchBar.gameObject.SetActive(true);
@@ -61,7 +84,7 @@ public class CameraController : MonoBehaviour
                 MouseClickDisabler.SetActive(false);
             }
 
-			// Flugmodus wird ausgeführt.
+            // Flight Mode
             if (!stopmoving)
             {
                 InputFieldSearchBar.gameObject.SetActive(false);
@@ -74,7 +97,7 @@ public class CameraController : MonoBehaviour
             }
         }
 
-		// Steuerung innerhalb des Flugmodus wird ausgeführt.
+        // Controlls within the flight mode.
         if(stopmoving == false)
         {
             yaw += speedH * Input.GetAxis("Mouse X");
@@ -82,7 +105,6 @@ public class CameraController : MonoBehaviour
 
             transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 
-            // Tastatur Belegungen.
             Vector3 p = GetBaseInput();
 
             if (Input.GetKey(KeyCode.LeftShift))
@@ -120,7 +142,7 @@ public class CameraController : MonoBehaviour
             }
         }
 
-		// Steuerung der Interaktion mit den Stations-Objekten.
+        // Interacting with the Station Objects.
         if(stopmoving == true)
         {         
             if (Input.GetMouseButtonDown(0))
@@ -137,8 +159,10 @@ public class CameraController : MonoBehaviour
         }
     }
 
-	// In dieser Klasse werden die jeweiligen Aktionen ausgeführt falls der
-	// Nutzer eine der "WASD" Tasten betätigt.
+    /// <summary>
+    /// Passes the movement input from the WASD keys.
+    /// </summary>
+    /// <returns></returns>
     private Vector3 GetBaseInput()
     {
         Vector3 p_Velocity = new Vector3();

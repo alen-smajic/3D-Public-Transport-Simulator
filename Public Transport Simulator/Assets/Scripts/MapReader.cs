@@ -3,13 +3,37 @@ using UnityEngine;
 using System.Xml;
 using UnityEngine.SceneManagement;
 
-// Dieses Skript extrahiert die verschiedenen Datensätze aus der XML
-// Datei und erzeugt die jeweiligen Objekte anhand der Klassen aus 
-// dem Serialization Ordner. Die Objekte werden dann in Wörterbüchern/Listen
-// gespeichert um auf diese Datenstrukturen aus anderen Skripten heraus 
-// zuzugreifen. Sobald die Verarbeitung der Daten erfolgt ist wird die statische
-// Variable IsReady auf True gesetzt und das Skript "MapBuilder" beginnt mit der 
-// Generierung von Objekten.
+// This software has been further expanded by Alen Smajic (2020).
+
+/*
+    Copyright (c) 2017 Sloan Kelly
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// This script extracts the various data nodes from the XML file and generates
+/// the respective instances based on the classes from the serialization folder.
+/// The objects are then stored in dictionaries and lists to access these data
+/// structures from other scripts. As soon as the data has been processed, the
+/// variable "IsReady" turns true and the script "MapBuilder" is initiated.
+/// </summary>
 class MapReader : MonoBehaviour
 {
     public static OsmBounds bounds;  
@@ -28,16 +52,13 @@ class MapReader : MonoBehaviour
         ways = new Dictionary<ulong, OsmWay>();
         relations = new List<OsmRelation>();
 
-        // Falls der Nutzer eine txt. Datei eingibt die nicht in XML Format
-        // vorliegt, wird dies abgefangen und eine Fehlermeldung wird
-        // produziert die anhand dieser Variable aktiviert wird.
         FileLoader.simulator_loaded = true;  
 
         XmlDocument doc = new XmlDocument();
         try
         {
-            // Hier wird die XML-Datei geladen und die verschiedenen Datensatztypen
-            // werden extrahiert anhand der jeweiligen Funktion.
+            // The XML file is being loaded and the data nodes are being extracted using
+            // the classes from the serialization folder.
             doc.Load(FileLoader.ResourceFilePath);
             SetBounds(doc.SelectSingleNode("/osm/bounds"));
             if(UserPreferences.PublicTransportStreets || UserPreferences.PublicTransportRailways || UserPreferences.Stations)
@@ -53,30 +74,33 @@ class MapReader : MonoBehaviour
                 GetRelations(doc.SelectNodes("/osm/relation"));
             }
         }
-        // Im Falle eines Fehlers wird der Nutzer zurück ins Hauptmenü verwiesen
-        // und eine Fehlermeldung erscheint, da FileLoader.simulator_loaded auf
-        // True gesetzt wurde.
+
+        // If the user input path to the XML file is not in XML format, the user is
+        // being returned to the Main Menu with an error message.
         catch
         {
             SceneManager.LoadScene(0); 
         }
 
-        // Durch diese Variable wird den anderen Skripten mitgeteilt dass die
-        // Datenstrukturen verarbeitet wurden und bereit sind. Ab hier übernimmt
-        // "MapBuilder".
+        // Triggers the start of the "MapBuilder" script.
         IsReady = true;  
     }
 
-    // Extrahiert den Bounds Datensatz aus der XML Datei und erzeugt das entsprechende
-    // Objekt.
+    /// <summary>
+    /// Extracts the boundary information from the XML file and generates the corresponding
+    /// instance.
+    /// </summary>
+    /// <param name="xmlNode">XML node</param>
     void SetBounds(XmlNode xmlNode)
     {
         bounds = new OsmBounds(xmlNode);
     }
 
-    // Extrahiert die Node Datensätze aus der XML Datei und erzeugt die Objekte.
-    // Anschließend werden diese in einem Wörterbuch gespeichert. Falls nur 3D-
-    // Gebäude und/oder Straßen gewünscht, wird diese Funktion übersprungen.
+    /// <summary>
+    /// Extracts the nodes information from the XML file and generates the corresponding
+    /// instances.
+    /// </summary>
+    /// <param name="xmlNodeList">XML node</param>
     void GetNodes(XmlNodeList xmlNodeList)
     {
         foreach (XmlNode n in xmlNodeList)
@@ -86,11 +110,11 @@ class MapReader : MonoBehaviour
         }
     }
 
-    // Extrahiert die Way Datensätze aus der XML Datei und erzeugt die Objekte.
-    // Anschließend werden diese nur dann im Wörtebuch gespeichert wenn es sich
-    // um Schienen oder Straßen handelt und dies gewünscht ist.
-    // Falls nur 3D-Gebäude und/oder Stationen und/oder Straßen gewünscht, wird 
-    // diese Funktion übersprungen.
+    /// <summary>
+    /// Extracts the way information from the XML file and generates the corresponding
+    /// instances.
+    /// </summary>
+    /// <param name="xmlNodeList">XML node</param>
     void GetWays(XmlNodeList xmlNodeList)
     {
         foreach (XmlNode node in xmlNodeList)
@@ -114,11 +138,11 @@ class MapReader : MonoBehaviour
         }
     }
 
-    // Extrahiert die Relation Datensätze aus der XML Datei und erzeugt die Objekte.
-    // Falls die Relation eine Route darstellt wird diese in einer Liste gespeichert.
-    // Des Weiteren wird der Relationsname und der Transporttyp auf die Nodes innerhalb
-    // der NodeIDs Liste übertragen, falls Stationen gewünscht sind. Falls nur 3D-Gebäude
-    // und/oder Straßen gewünscht, wird diese Funktion übersprungen.
+    /// <summary>
+    /// Extract the relation information from the XML file and generates the corresponding
+    /// instances.
+    /// </summary>
+    /// <param name="xmlNodeList">XML node</param>
     void GetRelations(XmlNodeList xmlNodeList)
     {
         foreach (XmlNode node in xmlNodeList)
@@ -153,9 +177,11 @@ class MapReader : MonoBehaviour
         }
     }
 
-    // Falls ÖPNV-Straßen und/oder ÖPNV-Schienen gewünscht sind, werden hier
-    // noch die letzten Realtionsdaten ausgewertet und in die jeweiligen
-    // Ways aufgenommen.
+    /// <summary>
+    /// If public transport roads and railroads are activated in the options menu,
+    /// this function will extract the last data informations from these nodes.
+    /// </summary>
+    /// <param name="r">XML node</param>
     void TagPublicTransportWays(OsmRelation r)
     {
         foreach (ulong WayID in r.WayIDs)

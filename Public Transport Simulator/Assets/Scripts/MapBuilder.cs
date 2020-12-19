@@ -4,21 +4,45 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// Dieses Skript erzeugt anhand der Datenstrukturen aus dem Skript MapReader
-// alle Schienen und Stationen. Die Erzeugung der 3D-Gebäude und Straßen wird
-// ebenfalls veranlasst. Der Fortschritt wird anhand eines Ladefenster eingeblendet.
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// This script generates all railroads, station and roads using the information
+/// from the MapReader script. The generation oof the 3D buildings is also here
+/// instantiated. The progress is shown by a loading window with percentage.
+/// </summary>
 class MapBuilder : MonoBehaviour
 {
-    public GameObject StationPrefab; // Stationsobjekt.
-    public GameObject StationUIPrefab; // Stations-UI.
-    public GameObject buildings; // Mapbox 3D-Gebäude.
-    public GameObject roads; // Mapbox Straßen.
-    public GameObject InGameLoadingScreen; // Zeigt den Ladeprozentsatz an.
-    public GameObject InGameLoadingMessage; // Zeigt die Ladebenachrichtigung an.
-    public GameObject InGameLoadingWindow; // Zeigt das komplette Ladefenster an.
+    public GameObject StationPrefab; // Station objects.
+    public GameObject StationUIPrefab; // Station-UI.
+    public GameObject buildings; // Mapbox 3D buildings.
+    public GameObject roads; // Mapbox map.
+    public GameObject InGameLoadingScreen; // Shows the loading percentage.
+    public GameObject InGameLoadingMessage; // Shows loading message.
+    public GameObject InGameLoadingWindow; // Show loading windows.
 
-    // Hier sind die verschiedenen Farben für die Straßen und Schienen 
-    // hinterlegt. Werden bei der Generierung zugewiesen.
+    // Here are the various public transport colors stored which are used
+    // upon generating the roads and railroads.
     public Material bus_streets;
     public Material public_transport_railways;
     public Material subways;
@@ -28,16 +52,20 @@ class MapBuilder : MonoBehaviour
     public Material light_rails;
     public static Material selected_way;
 
-    Material inUse; // Aktuell zugewiesenes Material.
+    Material inUse; 
 
-    // Nachdem die Stationen generiert wurden, können die Straßen und Schienen
-    // generiert werden da es hier Informationsabhängigkeiten gibt.
     bool StationsCreated = false;
 
-    // Dieser Abschnitt wird für die Ladeprozentberechnung genutzt.
+    // This is used for the loading percentage window.
     float processed_items = 0f;
     int percentageAmount = 0;
 
+    /// <summary>
+    /// This function waits for the MapReader script to process all the information.
+    /// As soon as this is done, the MapReader script will trigger this function to
+    /// start the process of scene building.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Start()
     {
         if (!UserPreferences.Stations)
@@ -46,7 +74,7 @@ class MapBuilder : MonoBehaviour
         }
         else
         {
-            StationBuilder(); // Stationen werden erzeugt.
+            StationBuilder(); // Stations are being built.
         }
 
         while (!MapReader.IsReady || !StationsCreated)
@@ -56,26 +84,27 @@ class MapBuilder : MonoBehaviour
 
         if (UserPreferences.Buildings)
         {
-            // Falls 3D-Gebäude gewünscht, werden Sie hier erzeugt.
+            // 3D buildings are being instantiated.
             GameObject MapboxBuildings = Instantiate(buildings);
             MapboxBuildings.transform.localScale = new Vector3(1.223f, 1.22264f, 1.219f);
             MapboxBuildings.transform.localPosition = new Vector3(0, -0.1f, 0);
         }
         if (UserPreferences.AllStreets)
         {
-            // Falls Straßen gewünscht, werden Sie hier erzeugt.
+            // The map is being instantiated.
             GameObject MapboxRoads = Instantiate(roads);
             MapboxRoads.transform.localScale = new Vector3(1.223f, 1.22264f, 1.219f);
             MapboxRoads.transform.localPosition = new Vector3(0, -0.1f, 0);
         }
         if(UserPreferences.PublicTransportRailways || UserPreferences.PublicTransportStreets)
         {
-            StartCoroutine(WayBuilder()); // Schienen und Busstraßen werden erzeugt.
+            StartCoroutine(WayBuilder()); // Roads and railroads are being instantiated.
         }
     }
 
-
-    // Hier wird über alle Relationen iteriert, um die Stationen zu erstellen.
+    /// <summary>
+    /// We iterate over all relation instances to generate the station objects.
+    /// </summary>
     void StationBuilder()
     {
         for(int i=0; i<MapReader.relations.Count; i++)
@@ -123,10 +152,11 @@ class MapBuilder : MonoBehaviour
         StationsCreated = true;
     }
 
-    // Falls Stationen gewünscht sind, wird diese Funktion aufgerufen. Anhand
-    // der Relation wird dann ein Stationsobjekt in der Unity Welt erstellt
-    // und ein UI mit der jeweiligen Station gekoppelt welches Informationen
-    // über die Station enthält.
+    /// <summary>
+    /// We iterate over the relation instances to generate the Station objects and
+    /// the corresponding station UIs.
+    /// </summary>
+    /// <param name="r">relation instance</param>
     void CreateStations(OsmRelation r)
     {       
         foreach (ulong NodeID in r.StoppingNodeIDs)
@@ -136,29 +166,27 @@ class MapBuilder : MonoBehaviour
 
             try
             {
-                // Falls anhand eines Nodes eine Station bereits angelegt wurde,
-                // wird dort nicht nochmal eine neue Station angelegt, sondern
-                // die bestehende wird mit den neuen Informationen angereichert.
-                // Somit vermeidet man den Fall, an einem Punkt mehrfach überlappende
-                // Stationen zu haben.
+                // If a station has already been created using a node position, a new station will not
+                // be created there but the existing one will be augmented with the new information. This 
+                // avoids the case of multiple overlapping station object at one point.
                 if (MapReader.nodes[NodeID].StationCreated == true)
                 {
                     List<GameObject> allObjects = new List<GameObject>();
                     Scene scene = SceneManager.GetActiveScene();
                     scene.GetRootGameObjects(allObjects);
 
-                    // Es wird über alle Unity Objekte iterriert um die bereits
-                    // angelegte Station zu finden.
+                    // We iterate over all Unity objects to find the station that has
+                    // already been generated at the certain point.
                     for (int i = 5; i < allObjects.Count; i++)
                     {
                         if(allObjects[i].transform.position == MapReader.nodes[NodeID] - MapReader.bounds.Centre)
                         {
                             bool doubleFound = false;
 
-                            // Hier wird überprüft ob die Informationen die hinzugefügt werden soll
-                            // evt. schon in der Station entahlten sind (ist auf einen Bug zurückzuführen
-                            // wo viele gleiche Informationen gespeichert wurden). Ursache ist derzeit nicht
-                            // bekannt. Dies ist ein Workaround.
+                            // Here we check if the new information that is being added to the station object,
+                            // has not already been stored inside the station object. This operation can be traced
+                            // back to a bug which I encountered during development, where the same information
+                            // was stored multiple times. The reason for this is still unclear, this is a workaround.
                             GameObject Dropdown = allObjects[i].transform.GetChild(0).transform.GetChild(0).transform.GetChild(2).gameObject;
                             var dropOptions = Dropdown.GetComponent<Dropdown>();
                             for(int j = 0; j < dropOptions.options.Count; j++)
@@ -172,17 +200,17 @@ class MapBuilder : MonoBehaviour
                                     }
                                 }
                             }
-                            if (!doubleFound)  // Falls Infos nicht vorliegen, werden sie hier eingetragen.
+                            if (!doubleFound)  // If no information is found, we add the new information here.
                             {
                                 dropOptions.AddOptions(MapReader.nodes[NodeID].TransportLines);
                                 if (r.TransportType == "bus")
                                 {
-                                    // Aktiviert das Bussymbol in der UI.
+                                    // Activates the bus symbol in the UI.
                                     allObjects[i].transform.GetChild(0).GetChild(0).transform.GetChild(4).gameObject.SetActive(true);
                                 }
                                 else
                                 {
-                                    // Aktiviert das Zugsymbol in der UI.
+                                    // Activates the train symbol on the UI.
                                     allObjects[i].transform.GetChild(0).GetChild(0).transform.GetChild(5).gameObject.SetActive(true);
                                 }
                                 continue;
@@ -197,8 +225,7 @@ class MapBuilder : MonoBehaviour
                 Vector3 new_station_position = new_station - MapReader.bounds.Centre;
                 station_object.transform.position = new_station_position;
 
-                // Wird gesetzt damit auf dieser Position nicht nochmals eine Station 
-                // platziert wird.
+                // Is being set so that on this position, no new stations are being generated.
                 MapReader.nodes[NodeID].StationCreated = true;
 
 
@@ -220,12 +247,12 @@ class MapBuilder : MonoBehaviour
 
                 if(r.TransportType == "bus")
                 {
-                    // Aktiviert das Bussymbol der UI.
+                    // Activates the bus symbol on the UI.
                     stationUI_object.transform.GetChild(4).gameObject.SetActive(true);
                 }
                 else
                 {
-                    // Aktiviert das Zugsymbol der UI.
+                    // Activates the train symbol on the UI.
                     stationUI_object.transform.GetChild(5).gameObject.SetActive(true);
                 }
             }
@@ -236,9 +263,11 @@ class MapBuilder : MonoBehaviour
         }
     }
 
-    // Diese Funktion dient der Generierung, der Straßen/Schienen.
-    // Ein Ladefenster ist implementiert welches den aktuellen Stand der 
-    // Durchläufe wiederspiegelt.
+    /// <summary>
+    /// This function generates the road and railrooads. It also shows a loading
+    /// screen with the progress percentage.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator WayBuilder()
     {
         float TargetCount = MapReader.ways.Count;
@@ -248,8 +277,8 @@ class MapBuilder : MonoBehaviour
 
         foreach (KeyValuePair<ulong, OsmWay> w in MapReader.ways)
         {
-            // Hier ist ein einfacher Ladeprozentsatz implementiert, welcher
-            // anhand der aktuellen Durchlaufzahl berechnet wurde.
+            // A simple loading progress logic, which returns the amount
+            // of processed items divided by the total number of items.
             processed_items += 1;
             float loadingPercentage = processed_items / TargetCount * 100;
 
@@ -268,7 +297,7 @@ class MapBuilder : MonoBehaviour
                 InGameLoadingWindow.SetActive(false);
             }
 
-            // Ab hier werden die Straßen/Schienen generiert.
+            // Here we start the process of road/rail road instantiation.
             if (w.Value.PublicTransportStreet)
             {
                 if (UserPreferences.PublicTransportStreets)
@@ -377,7 +406,7 @@ class MapBuilder : MonoBehaviour
 
             mr.material = inUse;
 
-            // Hier werden die Vektoren, Normalen und Indices gespeichert.
+            // Here we store the vectors, normales and indexes.
             List<Vector3> vectors = new List<Vector3>();  
             List<Vector3> normals = new List<Vector3>();
             List<int> indicies = new List<int>();
@@ -392,7 +421,7 @@ class MapBuilder : MonoBehaviour
 
                 Vector3 diff = (s2 - s1).normalized;
 
-                // Hier wird die Breite eines Weges auf einen Meter gesetzt.
+                // The width of road and railroads is set to 1 meter.
                 var cross = Vector3.Cross(diff, Vector3.up) * 1.0f; 
 
                 Vector3 v1 = s1 + cross;
@@ -416,13 +445,10 @@ class MapBuilder : MonoBehaviour
                 idx2 = vectors.Count - 3;
                 idx1 = vectors.Count - 4;
 
-                // Die Indizes müssen im Uhrzeigersinn und gegen den Uhrzeigersinn gehen. Somit werden 2 Dreiecke erstellt 
-                // welche von jeder Seite aus betrachtet nicht durchsichtig sind. Erstes Dreieck v1, v3, v2.
                 indicies.Add(idx1);
                 indicies.Add(idx3);
                 indicies.Add(idx2);
 
-                // Zweites Dreieck v3, v4, v2.
                 indicies.Add(idx3);
                 indicies.Add(idx4);
                 indicies.Add(idx2);
@@ -434,8 +460,8 @@ class MapBuilder : MonoBehaviour
 
             yield return null;
 
-            // Am Ende wird jeder Weg anhand seiner Unity Koordinaten festgehalten. Somit können diese später für
-            // die durchfahrenden Züge und Busse genutzt werden.
+            // Lastly we store the Unity coordinates of every generated way. This is then used later on
+            // when we want to move the transport vehicles across the ways.
             for(int i = 0; i < w.Value.NodeIDs.Count; i++)
             {
                 OsmNode p1 = MapReader.nodes[w.Value.NodeIDs[i]];
@@ -444,8 +470,12 @@ class MapBuilder : MonoBehaviour
         }
     }
 
-    // Diese Funktion gibt den zentralen Punkt eines Objekts zurück (eines Ways). 
-    // Wird als Referenzpunkt genutzt für das Platzieren der Objekte.
+    /// <summary>
+    /// Returns the center point of an object. This information is being used as the reference
+    /// for placing the object inside the Unity world.
+    /// </summary>
+    /// <param name="way">way instance</param>
+    /// <returns></returns>
     protected Vector3 GetCentre(OsmWay way)  
     {
         Vector3 total = Vector3.zero;

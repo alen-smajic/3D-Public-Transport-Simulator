@@ -1,10 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 
-// Diese Klasse nutzt die Relation Datensätze aus der XML Datei und erzeugt
-// die jeweiligen Objekte daraus. Anhand dieser Objekte werden die einzelnen
-// Ways kategorisiert und es wird definiert welche Punkte Stationen darstellen
-// und welche Ways für den ÖPNV genutzt werden.
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// This class contains information about the public transport lines. Using
+/// these information, we can determine which ways are railroads and which 
+/// are roads. We can also determine which nodes are stations.
+/// </summary>
 class OsmRelation : BaseOsm
 {
     public bool Route { get; private set; }
@@ -19,6 +42,10 @@ class OsmRelation : BaseOsm
 
     public List<string> StationNames { get; set; }
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="node">XML node</param>
     public OsmRelation(XmlNode node)
     {
         StoppingNodeIDs = new List<ulong>();
@@ -28,10 +55,11 @@ class OsmRelation : BaseOsm
         IsPublicRoute(node);
     }
 
-    // Durchsucht die "Tags" der Relation Datensätze um festzustellen ob diese
-    // Relation eine Bus oder Zug-Route ist. Falls es sich um eine Zug-Route handelt 
-    // wird der Zugtyp erfragt. Des Weiteren werden dann auch der Name der Relation
-    // und die ganzen Members der Relation aufgegriffen.
+    /// <summary>
+    /// Checks the tags of the Relation nodes if it contains public transport
+    /// information. 
+    /// </summary>
+    /// <param name="node">XML node</param>
     void IsPublicRoute(XmlNode node)
     {
         XmlNodeList tags = node.SelectNodes("tag");
@@ -84,7 +112,10 @@ class OsmRelation : BaseOsm
         }
     }
 
-    // Greift auf den Namen des Relation-Datensatzes zu.
+    /// <summary>
+    /// Stores the name of the relation nodes.
+    /// </summary>
+    /// <param name="node">XML node</param>
     void NameFinder(XmlNode node)
     {
         XmlNodeList tags = node.SelectNodes("tag");
@@ -98,9 +129,11 @@ class OsmRelation : BaseOsm
         }
     }
 
-    // Speichert die IDs der Ways welche Bestandteil der Relation sind.
-    // Speichert die IDs der Nodes welche die Haltepositionen der Route
-    // darstellen.
+    /// <summary>
+    /// Stores the IDs of the ways and nodes which are contained within the
+    /// relation nodes.
+    /// </summary>
+    /// <param name="node">XML node</param>
     void RelationMembers(XmlNode node)
     {
         XmlNodeList members = node.SelectNodes("member");

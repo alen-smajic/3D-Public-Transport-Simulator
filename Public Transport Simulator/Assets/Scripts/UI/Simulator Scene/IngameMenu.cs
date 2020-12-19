@@ -1,8 +1,31 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// Diese Klasse steuert die Ausführung der Benutzeroberfläche innerhalb
-// der Simulation.
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// This class controlls the UI within the simulation scene.
+/// </summary>
 public class IngameMenu : MonoBehaviour
 {
     public GameObject Buildings;
@@ -29,7 +52,9 @@ public class IngameMenu : MonoBehaviour
     public static bool MenuHidden = false;
     public static bool DarkModeOn = false;
 
-    // Blendet das komplette Menü aus.
+    /// <summary>
+    /// Hides the complete UI.
+    /// </summary>
     public void HideUI()
     {
         MenuWindow.SetActive(false);
@@ -37,7 +62,9 @@ public class IngameMenu : MonoBehaviour
         MenuHidden = true;
     }
 
-    // Blendet das Menü wieder ein.
+    /// <summary>
+    /// Show the complete UI.
+    /// </summary>
     public void ShowUI()
     {
         ShowMenuButton.SetActive(false);
@@ -45,7 +72,9 @@ public class IngameMenu : MonoBehaviour
         MenuHidden = false;
     }
 
-    // Ändert den Simulationshimmel in die Tagesansicht.
+    /// <summary>
+    /// Switch to light mode.
+    /// </summary>
     public void LightMode()
     {
         DarkModeButton.SetActive(true);
@@ -55,7 +84,9 @@ public class IngameMenu : MonoBehaviour
         DarkModeOn = false;
     }
 
-    // Ändert den Simulationshimmel in die Nachtansicht.
+    /// <summary>
+    /// Switch to dark mode.
+    /// </summary>
     public void DarkMode()
     {
         LightModeButton.SetActive(true);
@@ -65,7 +96,9 @@ public class IngameMenu : MonoBehaviour
         DarkModeOn = true;
     }
 
-    // Blendet die Legendenleiste ein.
+    /// <summary>
+    /// Show the object legend (UI-Element).
+    /// </summary>
     public void ShowLegend()
     {
         ShowLegendButton.gameObject.SetActive(false);
@@ -73,7 +106,9 @@ public class IngameMenu : MonoBehaviour
         LegendBar.SetActive(true);
     }
 
-    // Blendet die Legendenleiste aus.
+    /// <summary>
+    /// Hide the object legend (UI-Element).
+    /// </summary>
     public void HideLegend()
     {
         HideLegendButton.gameObject.SetActive(false);
@@ -81,7 +116,9 @@ public class IngameMenu : MonoBehaviour
         LegendBar.SetActive(false);
     }
 
-    // Blender die Gebäude ein.
+    /// <summary>
+    /// Show 3D building in the scene.
+    /// </summary>
     public void ShowBuildings()
     {
         ShowBuildingsButton.SetActive(false);
@@ -89,7 +126,9 @@ public class IngameMenu : MonoBehaviour
         Buildings.SetActive(true);
     }
 
-    // Blendet die Gebäude aus.
+    /// <summary>
+    /// Hide 3D buildings from the scene.
+    /// </summary>
     public void HideBuildings()
     {
         if (UserPreferences.Buildings)
@@ -107,7 +146,9 @@ public class IngameMenu : MonoBehaviour
         }
     }
 
-    // Öffnet ein Fenster mit den Steuerungshinweisen.
+    /// <summary>
+    /// Open the User Manuals.
+    /// </summary>
     public void OpenInstructions()
     {
         InstructionsWindows1.SetActive(true);
@@ -115,35 +156,45 @@ public class IngameMenu : MonoBehaviour
         InstructionsOn = true;
     }
 
-    // Öffnet die nächste Instruktionsseite.
+    /// <summary>
+    /// Next page button of the User Manuals.
+    /// </summary>
     public void NexInstructionPage1()
     {
         InstructionsWindows2.SetActive(true);
         InstructionsWindows1.SetActive(false);
     }
 
-    // Öffnet die nächste Instruktionsseite.
+    /// <summary>
+    /// Next page button of the User Manuals.
+    /// </summary>
     public void NextInstructionPage2()
     {
         InstructionsWIndows3.SetActive(true);
         InstructionsWindows2.SetActive(false);
     }
 
-    // Öffnet die vorherige Instruktionsseite.
+    /// <summary>
+    /// Return button of the User Manuals.
+    /// </summary>
     public void ReturnInstructionPage1()
     {
         InstructionsWindows1.SetActive(true);
         InstructionsWindows2.SetActive(false);
     }
 
-    // Öffnet die vorherige Instruktionsseite.
+    /// <summary>
+    /// Return button of the user manuals.
+    /// </summary>
     public void ReturnInstructionPage2()
     {
         InstructionsWindows2.SetActive(true);
         InstructionsWIndows3.SetActive(false);
     }
 
-    // Schließt das aktuelle Fenster.
+    /// <summary>
+    /// Controlls the "OK" button which closes the UI-Element.
+    /// </summary>
     public void OKButton()
     {
         NoBuildingsMessage.SetActive(false);
@@ -154,8 +205,10 @@ public class IngameMenu : MonoBehaviour
         InstructionsOn = false;
     }
 
-    // Bricht die Simulation ab. Stellt die Optionen wieder 
-    // auf die Standardeinstellungen.
+    /// <summary>
+    /// Controlls the "Leave the simulation" button which returns 
+    /// the user to the Main Menu. Resets all options.
+    /// </summary>
     public void ReturnToMenu()
     {
         FileLoader.simulator_loaded = false;

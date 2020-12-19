@@ -1,24 +1,48 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-// Diese Klasse ist an den Bussen und den ersten Schienenfahrzeugen angehängt und steuert deren Bewegung.
-// Dabei wird eine Liste von Koordinaten abgearbeitet und das Fahrzeug jeweils zu dem nächsten Punkt aus 
-// der Liste bewegt. Falls auf dem Weg eine Station angefahren wird, stoppt das Fahrzeug für 1 Sekunde
-// an diesem Punkt. Erreicht das Fahrzeug das Ende der Liste, wird es zerstört.
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// This script controlls the movement of the busses and the first train wagon. To move the vehicles, a list
+/// of coordinates is provided which contains unity coordinates. The vehicle is basically moving from point to 
+/// point. If the vehicle reaches a point where a station is located, it stops for 1 second. When the vehicle
+/// reaches the end of the list, it destroys itself.
+/// </summary>
 public class VehicleMover : MonoBehaviour
 {
-    int targetIndex = 0; // Index des Punktes welcher als nächstes angefahren wird.
-    int maxIndex;  // Letzter Index der Liste. Wird genutzt um das Fahrzeug am Ende zu zerstören.
+    int targetIndex = 0; // Index of the next point which we are moving to.
+    int maxIndex;  
 
     bool isWaiting = false;
 
-    float VehicleMaxSpeed = 100f; // Geschwindigkeit des Fahrzeugs.
+    float VehicleMaxSpeed = 100f; 
 
     void Start()
     {       
-        transform.position = SortWay.PathsInRightOrder[0][0]; // Das Fahrzeug befindet sich am ersten Punkt der Liste.
+        transform.position = SortWay.PathsInRightOrder[0][0]; // Starting point for the vehicle.
 
-        maxIndex = SortWay.MoveToTarget.Count - 1; // Letzter verfügbarer Index der Liste.
+        maxIndex = SortWay.MoveToTarget.Count - 1; 
     }
 
     void Update()
@@ -33,40 +57,42 @@ public class VehicleMover : MonoBehaviour
         }
         if (isWaiting)
         {
-            return; // Fahrzeug hält an einer Station an.
+            return; // Vehicle doesnt move uppon reaching a station.
         }
 
-        // Das Fahrzeug bewegt sich jeweils zum nächsten Punkt der "MoveToTarget" Liste.
+        // The vehicles moves to the next point from the "MoveToTarget" list.
         transform.position = Vector3.MoveTowards(transform.position, SortWay.MoveToTarget[targetIndex], Time.deltaTime * VehicleMaxSpeed);
 
         if (transform.position == SortWay.MoveToTarget[targetIndex])
         {
             if (TranSportWayMarker.StationOrder.Contains(transform.position))
             {
-                // Falls eine Station erreicht wurde, wird das Fahrzeug angehalten.
+                // If the vehicle reaches a station, it stops.
                 StartCoroutine(Waiting());
             }
             if(targetIndex + 1 > maxIndex) 
             {
-                // Falls das Fahrzeug den letzten Punkt der "MoveToTarget" Liste erreicht, wird es zerstört.
+                // If the vehicle reaches the last point of the list, it destroys itself.
                 Destroy(gameObject);
                 return;
             }
             else if (SortWay.PathLastNode.Contains(transform.position))
             {
-                // Falls das Fahrzeug den letzten Punkt eines Pfades erreicht hat, wird es zum nächsten Punkt
-                // "telepotiert" statt diesen anzufahren. Dieser nächste Punkt ist zugleich der erste Punkt des neuen Pfades. Dies wird
-                // gemacht um zu vermeiden dass das Fahrzeug zum nächsten Punkt ohne Straße/Schine fährt.
+                // If the road/railroad consists of more than one part we have to teleport the vehicle to the other part upon reaching.
+                // the end of one part.
                 int index = SortWay.MoveToTarget.IndexOf(transform.position);
                 transform.position = SortWay.MoveToTarget[index + 1];
             }
-            transform.LookAt(SortWay.MoveToTarget[targetIndex + 1]); // Rotiert das Fahrzeug in die Richtung des nächsten Punktes.
+            transform.LookAt(SortWay.MoveToTarget[targetIndex + 1]); // Rotates te vehicle in the right direction.
 
             targetIndex += 1;           
         }
     }
 
-    // Diese Funktion hält ein Fahrzeug für 2 Sekunden an. Wird an Stationen aufgerufen.
+    /// <summary>
+    /// Stops the vehicle movement for 2 seconds.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator Waiting()
     {
         isWaiting = true;

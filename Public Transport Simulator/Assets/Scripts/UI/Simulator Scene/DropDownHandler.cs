@@ -3,34 +3,61 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// Diese Klasse steuert die Ausführung der Dropdown-Anwendungen jeder Station.
-// Steuert die komplette Stations-UI.
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// This class controlls the UI of the Station-Objects inside the simulation.
+/// </summary>
 public class DropDownHandler : MonoBehaviour
 {
     public GameObject DropDownText;
-
     public GameObject SearchResultsDropdown;
     public GameObject SearchInput;
     public GameObject Camera;
 
     bool SearchingStarted = false;
 
-    // Falls der Nutzer eine Option aus dem Dropdown auswählt wird die Funktion
-    // SelectPublicTransportLine aufgerufen um die jeweilige Linie zu markieren.
+    /// <summary>
+    /// Upon selecting a public transport line from the dropdown menu of a station, this function
+    /// is called which calls the function for way marking and vehicle instantiation.
+    /// </summary>
     public void React()
     {
         TranSportWayMarker.SelectPublicTransportLine(DropDownText.GetComponent<Text>().text);
     }
 
-	// Falls der Nutzer den Schließen-Button drückt, wird die Stations-UI geschlossen.
+    /// <summary>
+    /// Called when the user clicks on the close button of a Station UI. Closes the Station UI.
+    /// </summary>
     public void CloseUI()
     {
         gameObject.SetActive(false);
     }
 
-    // Hier wird die Suche nach den Stationen, welche aus dem Such-Dropdown ausgewählt wurde, ausgeführt.
-    // Dabei wird der Suchbegriff benutzt und über alle verfügbaren Stationen iterriert. Am Ende werden diese
-    // Stationen aktiviert und die Kamera entsprechend ausgerichtet.
+    /// <summary>
+    /// This function is called when the user selects a station from the search bar dropdown. It activates the 
+    /// Station UIs of all specified stations and teleports the user to their target locations.
+    /// </summary>
     public void SelectFoundStations()
     {
         if (SearchingStarted)

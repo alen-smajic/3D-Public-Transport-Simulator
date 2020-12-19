@@ -1,17 +1,13 @@
 ﻿using System;
 
-/*
- * C# Implementation by Florian Müller, based on the C code published above, 14:50, 20.6.2008; 
- * updated to static functions by David Schmitt, 23.4.2010
- * https://wiki.openstreetmap.org/wiki/Mercator
- * This whole class Converts Latitude and Longitude into readable Unity Axis
- * It converts Latitude and Longitude into X and Y
- * Latitude and Longitude are represented on a round globe. We want to take that and place on a flat surface. 
-*/
-
-// Wird bei der Datenerfassung benutzt um Longitude und Latitude in X und Y Koordinaten umzuwandeln. Dies
-// erfolgt im Serialization Ordner von wo aus auf die unten beschriebenen Methoden zugegriffen wird.
-
+/// <summary>
+/// C# Implementation by Florian Müller, based on the C code published at
+/// http://wiki.openstreetmap.org/wiki/Mercator#C_implementation 14:50, 20.6.2008; 
+/// updated to static functions by David Schmitt, 23.4.2010
+/// 
+/// This whole class Converts Latitude and Longitude into readable Unity Axis.
+/// Latitude and Longitude are represented on a round globe. We want to take that and place it on a flat surface.
+/// </summary>
 public static class MercatorProjection
 {
     private static readonly double R_MAJOR = 6378137.0;

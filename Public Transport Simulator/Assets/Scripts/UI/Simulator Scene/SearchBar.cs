@@ -3,16 +3,42 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// Diese Klasse steuert die Ausführung der Suchfunktion innerhalb der Simulation.
+/*
+    Copyright (c) 2020 Alen Smajic
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/// <summary>
+/// Used for the search functionality within the simulated scene (controlls the search bar).
+/// </summary>
 public class SearchBar : MonoBehaviour
 {
     public GameObject TextBar;
     public GameObject DropDown;
 
-    public List<string> FoundStations; // Hier werden die Suchergebnisse hinterlegt.
-    public List<string> AllStation; // Hier befindet sich die Auswahl aller Stationen.
+    public List<string> FoundStations; 
+    public List<string> AllStation; 
 
-    // Als aller erstes wird eine Liste mit allen möglichen Stationsnamen hinterlegt.
+    /// <summary>
+    /// Stores all generated station names in a list.
+    /// </summary>
     void Start()
     {
         if(LanguageSettings.Language == "English")
@@ -44,9 +70,11 @@ public class SearchBar : MonoBehaviour
         }
     }
 
-    // Hier wird über die Menge der verfügbaren Stationen iterriert und nach dem 
-    // Suchbegriff gesucht. Die gefundenen Stationen werden dann in der Liste Foundstations
-    // hinterlegt und als Dropdown ausgegeben.
+    /// <summary>
+    /// Using the user input, this function searches for all stations which include the user input. These
+    /// are then returned in a list as "Search results".
+    /// </summary>
+    /// <param name="searchInput">User input from the search bar</param>
     public void SearchForStation(string searchInput)
     {
         if(searchInput == "")
