@@ -24,6 +24,8 @@ The aim of this project is the development of a public transport simulation fram
 
 The simulation framework uses an OSM XML parser algorithm to extract the necessary information from the [OSM XML](https://wiki.openstreetmap.org/wiki/OSM_XML) file. The backbone for this algorithm was developed by Sloan Kelly in his work [Real World Map Data](https://github.com/codehoose/real-world-map-data). The data is then being processed and stored for the scene generation. In the last step the simulation environment is built using the pre stored data and the [Mapbox SDK for Unity](https://www.mapbox.com/unity). 
 
+You can find a detailed description on the software architecture within the code comments and the written thesis. Furthermore, there is a instruction menu within the simulation which showes how to get the data to start the simulation.
+
 ## Publications ##
   * **[ResearchGate](https://www.researchgate.net/publication/344784145_Entwicklung_und_Erprobung_eines_interaktiven_3D_-_Stadtmodells_am_Beispiel_des_Personennahverkehrsnetzwerks_der_Stadt_Frankfurt)**
   * **[YouTube Video](https://www.youtube.com/watch?v=etmjra_CXOc)**
