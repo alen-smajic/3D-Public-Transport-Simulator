@@ -39,6 +39,7 @@ You can find a detailed description on the software architecture within the code
 
 ## Results ##
 <img align="center" width="1000" height="" src="Images%20of%20the%20simulation/Cities/New%20York.png">
+<img align="center" width="1000" height="" src="Images%20of%20the%20simulation/Images%20of%20the%20simulation/Station%20UI.gif">
 <img align="center" width="1000" height="" src="Images%20of%20the%20simulation/Vehicles/Transport%20Vehicle.gif">
 <img align="left" width="390" height="" src="Images%20of%20the%20simulation/Controls/Instructions%202.png">
 <img align="right" width="390" height="" src="Images%20of%20the%20simulation/Cities/New%20York%202.png">
